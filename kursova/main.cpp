@@ -94,7 +94,7 @@ public:
     }
 
     friend std::ostream& operator<<(std::ostream& os, const Money& money) {
-        os << std::fixed << std::setprecision(7) << money.amount << " " << currencyToString(money.currency);
+        os << std::fixed << std::setprecision(10) << money.amount << " " << currencyToString(money.currency);
         return os;
     }
 };
@@ -136,12 +136,45 @@ int main() {
     std::cout << "Converted to GBP: " << amountGBP << std::endl;
     std::cout << "Converted to TRY: " << suma.convertTo(Currency::BGN, rates).convertTo(Currency::EUR, rates).convertTo(Currency::TRY, rates).convertTo(Currency::GBP, rates) << std::endl;
 
-    Money anotherAmountEUR(51.1291881, Currency::EUR);
+    //Тестване ако 100 BGN, превърнато в EUR, е равно на 51.1292 EUR
+    Money anotherAmountEUR(51.1292, Currency::EUR);
     if (amountEUR == anotherAmountEUR) {
-        std::cout << "The amounts are equal." << std::endl;
+        std::cout << "Test 1: The amounts are equal." << std::endl;
     } else {
-        std::cout << "The amounts are not equal." << std::endl;
+        std::cout << "Test 1: The amounts are not equal." << std::endl;
     }
+
+    //Тестване ако 100 BGN, превърнато в EUR, е равно на съшите лева, но в TRY
+    if (amountEUR == amountTRY) {
+        std::cout << "Test 2: The amounts are equal." << std::endl;
+    } else {
+        std::cout << "Test 2: The amounts are not equal." << std::endl;
+    }
+
+    Money liri100(100, Currency::TRY);
+    Money liri99(99, Currency::TRY);
+    Money liri101(101, Currency::TRY);
+    //Тестване ако 100 TRY е по-малко от 99 TRY
+    if (liri100 < liri99) {
+        std::cout << "Test 3: 100 TRY is less than 99 TRY." << std::endl;
+    } else {
+        std::cout << "Test 3: 100 TRY isn't less than 99 TRY." << std::endl;
+    }
+    //Тестване ако 100 TRY е по-малко от 101 TRY
+    if (liri100 < liri101) {
+        std::cout << "Test 4: 100 TRY is less than 101 TRY." << std::endl;
+    } else {
+        std::cout << "Test 4: 100 TRY isn't less than 101 TRY." << std::endl;
+    }
+
+    //Тестване ако 100 BGN са същото като 100 TRY
+    Money leva100(100, Currency::BGN);
+    if (leva100 == liri100) {
+        std::cout << "Test 5: 100 BGN equals to 100 TRY." << std::endl;
+    } else {
+        std::cout << "Test 5: 100 BGN doesn't equal to 100 TRY." << std::endl;
+    }
+
 
     return 0;
 }
